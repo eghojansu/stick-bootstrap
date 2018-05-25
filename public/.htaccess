@@ -1,0 +1,31 @@
+# You should avoid using this file completely 
+# if you have access to httpd main server config file.
+# Using this file slows down your Apache http server.
+# Any directive that you can include in this file is better set in *Directory* block,
+# as it will have the *same effect with better performance*.
+# 
+# (Suggestion from apache htaccess documentation)
+
+# Override entry file
+DirectoryIndex app.php
+
+# Enable rewrite engine and route requests to framework
+RewriteEngine On
+
+# Some servers require you to specify the `RewriteBase` directive
+# In such cases, it should be the path (relative to the document root)
+# containing this .htaccess file
+#
+# RewriteBase /
+
+RewriteRule ^(app|var|vendor)\/|\.env.php$ - [R=404]
+
+<Limit GET HEAD POST PUT DELETE OPTIONS>
+  Require all granted
+</Limit>
+
+RewriteCond %{REQUEST_FILENAME} !-l
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule .* app.php [L,QSA]
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]

@@ -1,0 +1,22 @@
+@import 'var';
+
+body {
+  padding-top: 70px;
+}
+
+.mfooter {
+  padding: 10px;
+  text-align: center;
+  border-top: solid 1px gray('400');
+  margin-top: 20px;
+  color: gray('700');
+}
+
+.masthead {
+  margin-top: -20px;
+  min-height: 500px;
+  padding: 50px 30px;
+  background: theme-color('dark');
+  color: theme-color('light');
+  text-align: center;
+}

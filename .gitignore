@@ -1,0 +1,7 @@
+/public/assets/
+/node_modules/
+/var/
+/vendor/
+/xdev/
+/.env
+/.php_cs.cache
