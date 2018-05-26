@@ -2,7 +2,7 @@
     "name": "eghojansu/stick-bootstrap",
     "description": "Stick Framework Bootstrap",
     "license": "MIT",
-    "type": "library",
+    "type": "project",
     "author": [{
         "name": "Eko Kurniawan",
         "email": "ekokurniawanbs@gmail.com"
