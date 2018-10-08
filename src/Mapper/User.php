@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Mapper;
 
-use Fal\Stick\Security\UserInterface;
-use Fal\Stick\Security\UserProviderInterface;
-use Fal\Stick\Sql\Mapper;
+use Fal\Stick\Library\Security\UserInterface;
+use Fal\Stick\Library\Security\UserProviderInterface;
+use Fal\Stick\Library\Sql\Mapper;
 
 class User extends Mapper implements UserProviderInterface, UserInterface
 {
@@ -17,26 +15,7 @@ class User extends Mapper implements UserProviderInterface, UserInterface
 
     public function findById(string $id): ?UserInterface
     {
-        return $this->find($id);
-    }
-
-    public function page($page, $keyword, $cid)
-    {
-        $filter = ['id <>' => $cid];
-
-        if ($keyword) {
-            $filter[] = [
-                'username ~' => '%'.$keyword.'%',
-                '| id []' => '```(select user_id from profile where fullname like :username)',
-            ];
-        }
-
-        return $this->paginate((int) $page, $filter);
-    }
-
-    public function profile()
-    {
-        return $this->hasOne('profile');
+        return $this->withId($id);
     }
 
     /**
@@ -44,7 +23,7 @@ class User extends Mapper implements UserProviderInterface, UserInterface
      */
     public function getId(): string
     {
-        return strval($this->fields['id']['value']);
+        return strval($this->get('id'));
     }
 
     /**
@@ -52,7 +31,7 @@ class User extends Mapper implements UserProviderInterface, UserInterface
      */
     public function getUsername(): string
     {
-        return $this->fields['username']['value'] ?? '';
+        return $this->get('username');
     }
 
     /**
@@ -60,7 +39,7 @@ class User extends Mapper implements UserProviderInterface, UserInterface
      */
     public function getPassword(): string
     {
-        return $this->fields['password']['value'] ?? '';
+        return $this->get('password');
     }
 
     /**
@@ -68,14 +47,16 @@ class User extends Mapper implements UserProviderInterface, UserInterface
      */
     public function getRoles(): array
     {
-        return explode(',', $this->fields['roles']['value'] ?? '');
+        $roles = $this->get('roles');
+
+        return $roles ? explode(',', $roles) : array();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isExpired(): bool
+    public function isCredentialsExpired(): bool
     {
-        return !$this->fields['active']['value'];
+        return !$this->get('active');
     }
 }

@@ -3,44 +3,43 @@
 namespace App\Controller;
 
 use Fal\Stick\App;
-use Fal\Stick\Template;
+use Fal\Stick\Library\Security\Auth;
+use Fal\Stick\Library\Template\Template;
 
-class Controller
+abstract class Controller
 {
-    /** @var App */
     protected $app;
+    protected $auth;
+    protected $user;
 
-    public function __construct(App $app)
+    public function __construct(App $app, Auth $auth)
     {
         $this->app = $app;
+        $this->auth = $auth;
+        $this->user = $auth->getUser();
+        $this->boot();
     }
 
-    protected function _render(string $file, array $data = null, string $type = 'html'): string
+    protected function boot()
     {
-        $this->app['RES.HEADERS.Content-Type'] = 'text/html';
-
-        return $this->app->service(Template::class)->render($file, $data);
+        // to be overriden by children.
     }
 
-    protected function _front(string $file, array $data = null): string
+    protected function get($serviceId)
     {
-        $template = $this->app->service(Template::class);
-
-        $this->app['RES.HEADERS.Content-Type'] = 'text/html';
-
-        return $template->render('front', [
-            'content' => $template->render($file, $data),
-        ]);
+        return $this->app->service($serviceId);
     }
 
-    protected function _dashboard(string $file, array $data = null): string
+    protected function notify($message, $target = null, $type = 'success')
     {
-        $template = $this->app->service(Template::class);
+        return $this->app
+            ->set('SESSION.alerts.'.$type, $message)
+            ->reroute($target)
+        ;
+    }
 
-        $this->app['RES.HEADERS.Content-Type'] = 'text/html';
-
-        return $template->render('dashboard', [
-            'content' => $template->render($file, $data),
-        ]);
+    protected function render($view, array $data = null)
+    {
+        return $this->get(Template::class)->render($view, $data);
     }
 }

@@ -1,7 +1,6 @@
-/public/assets/
 /node_modules/
 /var/
 /vendor/
 /xdev/
-/.env
+/.env.php
 /.php_cs.cache

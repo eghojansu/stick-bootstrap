@@ -1,27 +1,25 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Mapper;
 
-use Fal\Stick\Sql\Mapper;
+use Fal\Stick\Library\Sql\Mapper;
 
 class Config extends Mapper
 {
-    public static function defaultConfig(): array
+    public static function defaultConfig()
     {
-        return [
-            ['name' => 'name', 'content' => 'App'],
-            ['name' => 'desc', 'content' => 'App'],
-            ['name' => 'alias', 'content' => 'App'],
-        ];
+        return array(
+            'name' => 'App',
+            'desc' => 'App',
+            'alias' => 'App',
+        );
     }
 
-    public function getConfig(): array
+    public function all()
     {
         $config = self::defaultConfig();
 
-        foreach ($this->findAll(null, null, 60) as $item) {
+        foreach ($this->find(null, null, 60) as $item) {
             $config[$item['name']] = $item['content'];
         }
 

@@ -2,53 +2,127 @@
 
 namespace App\Controller;
 
-use Fal\Stick\Security\Auth;
-use Fal\Stick\Validation\Validator;
+use App\Form\ArticleForm;
+use App\Form\ProfileForm;
+use App\Form\UserForm;
+use App\Mapper\Article;
+use App\Mapper\User;
+use Fal\Stick\Library\Crud;
+use Fal\Stick\Library\Security\Auth;
+use Fal\Stick\Library\Web;
 
 class DashboardController extends Controller
 {
-    public function dashboard()
+    public function home()
     {
-        return $this->_dashboard('dashboard/index');
+        return $this->render('dashboard/home.php');
     }
 
-    public function profile()
+    public function profile(ProfileForm $form)
     {
-        return $this->_dashboard('dashboard/profile', [
-            'success' => $this->app->flash('SESSION.success'),
-            'error' => $this->app->flash('SESSION.error'),
-        ]);
+        $form->build(array(
+            'user_id' => $this->user->id,
+        ), $this->user->toArray());
+
+        if ($form->isSubmitted() && $form->valid()) {
+            $data = $form->getData();
+
+            if ($data['new_password']) {
+                $data['password'] = $this->auth->getEncoder()->hash($data['new_password']);
+            }
+
+            $this->user->fromArray($data)->save();
+
+            return $this->notify('Profile has been updated.');
+        }
+
+        return $this->render('dashboard/profile.php', array(
+            'form' => $form,
+        ));
     }
 
-    public function profileUpdate(Auth $auth, Validator $validator)
+    public function post(Crud $crud, ...$segments)
     {
-        $user = $auth->getUser();
-        $valid = $validator->validate($_POST, [
-            'username' => 'trim|required|lenmin:6|unique:user,username,id,'.$user->getId(),
-            'fullname' => 'trim|required',
-            'new_password' => 'trim|lenmin:6',
-            'password' => 'trim|required|password',
-        ]);
+        return $crud
+            ->segments($segments)
+            ->mapper(Article::class)
+            ->form(ArticleForm::class)
+            ->searchable('title')
+            ->fields(array(
+                'listing' => array(
+                    'title' => null,
+                    'content' => null,
+                ),
+            ))
+            ->filters(array(
+                'category' => Article::CAT_POST,
+            ))
+            ->beforeCreate(function(Crud $crud, Web $web) {
+                return array(
+                    'category' => Article::CAT_POST,
+                    'author' => $this->user->id,
+                    'slug' => $web->slug($crud->getForm()->title),
+                    'created_at' => date('y-m-d H:i:s'),
+                );
+            })
+            ->beforeUpdate(function() {
+                return array(
+                    'updated_at' => date('y-m-d H:i:s'),
+                );
+            })
+            ->render()
+        ;
+    }
 
-        if ($valid['error']) {
-            $this->app->set('SESSION.error', $valid['error']);
+    public function user(Crud $crud, ...$segments)
+    {
+        $fields = array(
+            'fullname' => null,
+            'username' => null,
+            'roles' => null,
+            'active' => null,
+        );
 
-            return $this->app->reroute();
-        }
+        return $crud
+            ->segments($segments)
+            ->mapper(User::class)
+            ->form(UserForm::class)
+            ->formOptions(function(Crud $crud) use ($segments) {
+                return array(
+                    'mode' => reset($segments),
+                    'user_id' => $crud->getMapper()->id,
+                );
+            })
+            ->searchable('username')
+            ->fields(array(
+                'listing' => $fields,
+                'delete' => $fields,
+            ))
+            ->filters(array(
+                'id <>' => $this->user->id,
+            ))
+            ->beforeCreate(function(Crud $crud, Auth $auth) {
+                $form = $crud->getForm();
 
-        $data = $valid['data'];
-        unset($data['new_password'], $data['password']);
+                return array(
+                    'password' => $auth->getEncoder()->hash($form->password),
+                    'roles' => implode(',', $form->roles),
+                );
+            })
+            ->beforeUpdate(function(Crud $crud, Auth $auth) {
+                $form = $crud->getForm();
 
-        if ($valid['data']['new_password']) {
-            $data['password'] = $auth->getEncoder()->hash($valid['data']['new_password']);
-        }
-
-        $user->on('update', function ($user) use ($data) {
-            $user['profile']->fromArray($data)->save();
-        })->fromArray($data)->update();
-
-        $this->app->set('SESSION.success', 'Your profile has been updated.');
-
-        return $this->app->reroute();
+                return array(
+                    'password' => $form->password ? $auth->getEncoder()->hash($form->password) : $crud->getMapper()->password,
+                    'roles' => implode(',', $form->roles),
+                );
+            })
+            ->onPrepareData(function(Crud $crud) {
+                return array(
+                    'roles' => explode(',', $crud->getMapper()->roles),
+                );
+            })
+            ->render()
+        ;
     }
 }
