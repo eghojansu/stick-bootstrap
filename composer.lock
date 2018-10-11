@@ -12,19 +12,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/eghojansu/stick.git",
-                "reference": "98536c50794c74fe9b322700cf9716be0dd64713"
+                "reference": "5709f180f3ac767deac032b5178c89d9fc846661"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eghojansu/stick/zipball/98536c50794c74fe9b322700cf9716be0dd64713",
-                "reference": "98536c50794c74fe9b322700cf9716be0dd64713",
+                "url": "https://api.github.com/repos/eghojansu/stick/zipball/5709f180f3ac767deac032b5178c89d9fc846661",
+                "reference": "5709f180f3ac767deac032b5178c89d9fc846661",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^7.3"
             },
             "type": "library",
             "autoload": {
@@ -37,7 +34,7 @@
                 "MIT"
             ],
             "description": "Stick~to~PHP Framework",
-            "time": "2018-10-08T09:13:43+00:00"
+            "time": "2018-10-11T03:22:54+00:00"
         }
     ],
     "packages-dev": [],
