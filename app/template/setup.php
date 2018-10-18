@@ -24,7 +24,7 @@
       </div>
 
       <div class="collapse navbar-collapse" id="collapse-one">
-        <p class="navbar-text navbar-right">Current Version: <?= $app_version ?></p>
+        <p class="navbar-text navbar-right">Installed Version: <?= $installed_version ?> | App Version: <?= $app_version ?></p>
       </div>
     </div><!-- /.container -->
   </nav>
@@ -34,19 +34,17 @@
       <div class="col-sm-12">
         <p>Please press button below to begin installation process.</p>
 
-        <?php if ($complete): ?>
-          <div class="alert alert-info">
-            <strong>Installation complete!</strong><br>
-            <p>Please remove this file <strong><?= $file ?></strong> to be safe.</p>
-          </div>
+        <div class="alert alert-info">
+          <strong>Info!</strong><br>
+          <ul>
+            <li>To be safe, please remove this file <strong><?= $file ?></strong> after installation complete.</li>
+            <li>After installation complete you will not be able to see this page again.</li>
+          </ul>
+        </div>
 
-          <br>
-          <a href="<?= $BASEURL ?>" class="btn btn-success"><span class="glyphicon glyphicon-home"></span> Home</a>
-        <?php else: ?>
-          <form method="post">
-            <button class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-wrench"></span> Start Installation</button>
-          </form>
-        <?php endif ?>
+        <form method="post">
+          <button class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-wrench"></span> Start Installation</button>
+        </form>
       </div>
     </div>
   </div>

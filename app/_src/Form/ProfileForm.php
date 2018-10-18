@@ -29,7 +29,7 @@ class ProfileForm extends Twbs3Form
                 'class' => 'btn btn-primary',
             ))
             ->addButton('cancel', 'a', null, array(
-                'href' => $this->_app->path('dashboard'),
+                'href' => $this->_fw->path('dashboard'),
             ))
         ;
     }

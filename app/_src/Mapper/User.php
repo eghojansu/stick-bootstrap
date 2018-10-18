@@ -10,12 +10,12 @@ class User extends Mapper implements UserProviderInterface, UserInterface
 {
     public function findByUsername(string $username): ?UserInterface
     {
-        return $this->loadByUsername($username);
+        return $this->findOneByUsername($username);
     }
 
     public function findById(string $id): ?UserInterface
     {
-        return $this->withId($id);
+        return $this->findOneById($id);
     }
 
     /**

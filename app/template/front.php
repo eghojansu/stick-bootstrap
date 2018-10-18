@@ -27,9 +27,6 @@
       <div class="collapse navbar-collapse" id="collapse-one">
         <ul class="nav navbar-nav navbar-right">
           <li><a href="<?= $this->path('home') ?>">Home</a></li>
-          <li><a href="<?= $this->path('page', 'page=about') ?>">About</a></li>
-          <li><a href="<?= $this->path('page', 'page=contact') ?>">Contact</a></li>
-          <li><a href="<?= $this->path('sitemap') ?>">Sitemap</a></li>
           <li><a href="<?= $this->path('login') ?>">Login</a></li>
         </ul>
       </div>
@@ -38,13 +35,10 @@
 
   <div class="container">
     <div class="row">
-      <div class="col-sm-8">
+      <div class="col-sm-12">
         <?php $this->block('content') ?>
           Page content.
         <?php $this->endBlock() ?>
-      </div>
-      <div class="col-sm-4">
-        <?= $this->load('front/widgets.php') ?>
       </div>
     </div>
   </div>

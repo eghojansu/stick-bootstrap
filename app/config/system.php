@@ -1,15 +1,18 @@
 <?php
 
-use Fal\Stick\Library\Env;
-
-$tmp = Env::get('temp', './var/');
+use Fal\Stick\Library\Env as e;
 
 return array(
     'APP_DIR' => dirname(__DIR__).'/',
-    'DEBUG' => Env::get('debug', false),
-    'LOG' => Env::get('log', $tmp.'logs/'),
-    'TEMP' => $tmp,
-    'CACHE' => Env::get('cache', 'auto'),
-    'THRESHOLD' => Env::get('threshold', Fal\Stick\App::LOG_LEVEL_ERROR),
-    'LOCALES' => dirname(__DIR__).'/dict/',
+    'DB_OPTIONS' => array(
+        'debug' => e::get('debug', false),
+        'dsn' => sprintf('sqlite:%s', e::get('db_path')),
+    ),
+    'DB_PATH' => e::get('db_path'),
+    'CACHE' => e::get('cache', null),
+    'DEBUG' => e::get('debug', false),
+    'LOG' => e::get('log', null),
+    'LOCALES' => array(dirname(__DIR__).'/dict/'),
+    'THRESHOLD' => e::get('threshold', 'error'),
+    'TEMP' => e::get('temp', './var/'),
 );

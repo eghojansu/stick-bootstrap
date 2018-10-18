@@ -25,8 +25,8 @@ class UserForm extends Twbs3Form
             ))
             ->add('roles', 'choice', array(
                 'items' => array(
-                    'Administrator' => 'ROLE_ADMIN',
-                    'Operator' => 'ROLE_OPERATOR',
+                    'Administrator' => 'Admin',
+                    'Operator' => 'Operator',
                 ),
                 'expanded' => true,
                 'multiple' => true,

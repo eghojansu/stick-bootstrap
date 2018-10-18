@@ -2,12 +2,10 @@
 
 namespace App\Controller;
 
-use App\Form\ArticleForm;
 use App\Form\ProfileForm;
 use App\Form\UserForm;
-use App\Mapper\Article;
 use App\Mapper\User;
-use Fal\Stick\Library\Crud;
+use Fal\Stick\Library\Crud\Crud;
 use Fal\Stick\Library\Security\Auth;
 use Fal\Stick\Library\Web;
 
@@ -41,48 +39,8 @@ class DashboardController extends Controller
         ));
     }
 
-    public function post(Crud $crud, ...$segments)
-    {
-        return $crud
-            ->segments($segments)
-            ->mapper(Article::class)
-            ->form(ArticleForm::class)
-            ->searchable('title')
-            ->fields(array(
-                'listing' => array(
-                    'title' => null,
-                    'content' => null,
-                ),
-            ))
-            ->filters(array(
-                'category' => Article::CAT_POST,
-            ))
-            ->beforeCreate(function(Crud $crud, Web $web) {
-                return array(
-                    'category' => Article::CAT_POST,
-                    'author' => $this->user->id,
-                    'slug' => $web->slug($crud->getForm()->title),
-                    'created_at' => date('y-m-d H:i:s'),
-                );
-            })
-            ->beforeUpdate(function() {
-                return array(
-                    'updated_at' => date('y-m-d H:i:s'),
-                );
-            })
-            ->render()
-        ;
-    }
-
     public function user(Crud $crud, ...$segments)
     {
-        $fields = array(
-            'fullname' => null,
-            'username' => null,
-            'roles' => null,
-            'active' => null,
-        );
-
         return $crud
             ->segments($segments)
             ->mapper(User::class)
@@ -90,19 +48,16 @@ class DashboardController extends Controller
             ->formOptions(function(Crud $crud) use ($segments) {
                 return array(
                     'mode' => reset($segments),
-                    'user_id' => $crud->getMapper()->id,
+                    'user_id' => $crud->mapper()->id,
                 );
             })
-            ->searchable('username')
-            ->fields(array(
-                'listing' => $fields,
-                'delete' => $fields,
-            ))
+            ->searchable('username ~')
+            ->fields('listing,view,delete', 'fullname,username,roles,active')
             ->filters(array(
                 'id <>' => $this->user->id,
             ))
             ->beforeCreate(function(Crud $crud, Auth $auth) {
-                $form = $crud->getForm();
+                $form = $crud->form();
 
                 return array(
                     'password' => $auth->getEncoder()->hash($form->password),
@@ -110,16 +65,16 @@ class DashboardController extends Controller
                 );
             })
             ->beforeUpdate(function(Crud $crud, Auth $auth) {
-                $form = $crud->getForm();
+                $form = $crud->form();
 
                 return array(
-                    'password' => $form->password ? $auth->getEncoder()->hash($form->password) : $crud->getMapper()->password,
+                    'password' => $form->password ? $auth->getEncoder()->hash($form->password) : $crud->mapper()->password,
                     'roles' => implode(',', $form->roles),
                 );
             })
             ->onPrepareData(function(Crud $crud) {
                 return array(
-                    'roles' => explode(',', $crud->getMapper()->roles),
+                    'roles' => explode(',', $crud->mapper()->roles),
                 );
             })
             ->render()

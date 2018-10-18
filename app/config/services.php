@@ -1,70 +1,61 @@
 <?php
 
-use App\Mapper\User;
-use Fal\Stick\App;
-use Fal\Stick\Library\Crud;
-use Fal\Stick\Library\Env;
+use Fal\Stick\Fw;
+use Fal\Stick\Library\Crud\Crud;
 use Fal\Stick\Library\Html\Html;
 use Fal\Stick\Library\Security\Auth;
 use Fal\Stick\Library\Security\AuthValidator;
-use Fal\Stick\Library\Security\BcryptPasswordEncoder;
 use Fal\Stick\Library\Sql\Connection;
 use Fal\Stick\Library\Sql\MapperValidator;
 use Fal\Stick\Library\Template\Template;
 use Fal\Stick\Library\Validation\CommonValidator;
-use Fal\Stick\Library\Validation\NativeValidator;
 use Fal\Stick\Library\Validation\Validator;
 
 return array(
-    array(Connection::class, function (App $app) {
-        $options = array(
-            'debug' => $app['DEBUG'],
-            'dsn' => 'sqlite:'.Env::get('dbpath'),
-        );
-        $db = new Connection($app, $options);
-        $db->setLogLevel($app['THRESHOLD']);
-
-        return $db;
+    array(Connection::class, function(Fw $fw) {
+        return new Connection($fw, $fw->DB_OPTIONS);
     }),
     array(Template::class, array(
         'args' => array(
-            'app' => '%app%',
-            'dirs' => dirname(__DIR__).'/template/',
+            'fw' => '%fw%',
+            'dirs' => array(dirname(__DIR__).'/template/'),
         ),
     )),
     array(Auth::class, array(
         'args' => array(
-            'app' => '%app%',
-            'provider' => User::class,
-            'encoder' => BcryptPasswordEncoder::class,
+            'fw' => '%fw%',
+            'provider' => 'App\\Mapper\\User',
+            'encoder' => 'Fal\\Stick\\Library\\Security\\BcryptPasswordEncoder',
             'options' => array(
+                'login' => '/login',
+                'logout' => '/logout',
+                'redirect' => '/dashboard',
                 'rules' => array(
-                    '^/dashboard' => 'ROLE_ADMIN',
+                    '/dashboard' => 'Operator',
                 ),
-                'redirect' => array(
-                    'ROLE_ADMIN' => '/dashboard',
+                'roleHierarchy' => array(
+                    'Admin' => array('Operator'),
                 ),
             ),
         ),
     )),
     array(Validator::class, array(
-        'boot' => function (App $app, Connection $db, Auth $auth, $validator) {
-            $validator->add(new MapperValidator($app, $db));
-            $validator->add(new AuthValidator($auth));
-            $validator->add(new CommonValidator());
-            $validator->add(new NativeValidator());
+        'boot' => function(CommonValidator $common, MapperValidator $mapper, AuthValidator $auth, $validator) {
+            $validator->add($common, $mapper, $auth);
         },
     )),
     array(Crud::class, array(
         'boot' => function($crud) {
-            $crud->views(array(
-                'listing' => 'crud/listing.php',
-                'view' => 'crud/view.php',
-                'create' => 'crud/form.php',
-                'update' => 'crud/form.php',
-                'delete' => 'crud/delete.php',
-                'forbidden' => 'crud/forbidden.php',
-            ));
+            $crud
+                ->views(array(
+                    'listing' => 'crud/listing.php',
+                    'view' => 'crud/view.php',
+                    'create' => 'crud/form.php',
+                    'update' => 'crud/form.php',
+                    'delete' => 'crud/delete.php',
+                    'forbidden' => 'crud/forbidden.php',
+                ))
+            ;
         },
     )),
     array('html', Html::class),

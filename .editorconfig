@@ -10,5 +10,9 @@ trim_trailing_whitespace = true
 [*.php]
 insert_final_newline = true
 
-[*.{css,scss,js,twig}]
+[*.{css,html,js}]
 indent_size = 2
+
+[app/template/**/*.php]
+indent_size = 2
+insert_final_newline = false

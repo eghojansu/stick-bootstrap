@@ -6,7 +6,7 @@ use Fal\Stick\Library\Sql\Mapper;
 
 class Config extends Mapper
 {
-    public static function defaultConfig()
+    public static function defaults()
     {
         return array(
             'name' => 'App',
@@ -17,7 +17,7 @@ class Config extends Mapper
 
     public function all()
     {
-        $config = self::defaultConfig();
+        $config = self::defaults();
 
         foreach ($this->find(null, null, 60) as $item) {
             $config[$item['name']] = $item['content'];

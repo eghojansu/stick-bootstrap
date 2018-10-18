@@ -27,9 +27,7 @@
       <div class="collapse navbar-collapse" id="collapse-one">
         <ul class="nav navbar-nav">
           <li><a href="<?= $this->path('dashboard') ?>">Dashboard</a></li>
-          <li><a href="<?= $this->path('mpost', array('index')) ?>">Manage Post</a></li>
-          <li><a href="<?= $this->path('mpage') ?>">Manage Page</a></li>
-          <li><a href="<?= $this->path('muser', array('index')) ?>">Manage User</a></li>
+          <li><a href="<?= $this->path('users', array('index')) ?>">Manage User</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li><a href="<?= $this->path('profile') ?>">Profile</a></li>

@@ -25,7 +25,7 @@ class LoginForm extends Twbs3Form
                 'class' => 'btn btn-primary',
             ))
             ->addButton('cancel', 'a', null, array(
-                'href' => $this->_app->path('home'),
+                'href' => $this->_fw->path('home'),
             ))
         ;
     }

@@ -2,19 +2,19 @@
 
 namespace App\Controller;
 
-use Fal\Stick\App;
+use Fal\Stick\Fw;
 use Fal\Stick\Library\Security\Auth;
 use Fal\Stick\Library\Template\Template;
 
 abstract class Controller
 {
-    protected $app;
+    protected $fw;
     protected $auth;
     protected $user;
 
-    public function __construct(App $app, Auth $auth)
+    public function __construct(Fw $fw, Auth $auth)
     {
-        $this->app = $app;
+        $this->fw = $fw;
         $this->auth = $auth;
         $this->user = $auth->getUser();
         $this->boot();
@@ -27,12 +27,12 @@ abstract class Controller
 
     protected function get($serviceId)
     {
-        return $this->app->service($serviceId);
+        return $this->fw->service($serviceId);
     }
 
     protected function notify($message, $target = null, $type = 'success')
     {
-        return $this->app
+        return $this->fw
             ->set('SESSION.alerts.'.$type, $message)
             ->reroute($target)
         ;

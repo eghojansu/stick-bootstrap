@@ -3,6 +3,10 @@
 <?php $this->block('content') ?>
   <h1><?= $crud->title ?></h1>
 
+  <a href="<?= $crud->path() ?>" class="btn btn-default">Back</a>
+  <br>
+  <br>
+
   <?= $this->alerts() ?>
 
   <table class="table table-bordered">
@@ -15,11 +19,4 @@
       <?php endforeach ?>
     </tbody>
   </table>
-
-  <p><em>Are you sure?</em></p>
-
-  <form method="post">
-    <button type="submit" class="btn btn-danger">Delete</button>
-    <a href="<?= $crud->path() ?>" class="btn btn-default">Cancel</a>
-  </form>
 <?php $this->endBlock() ?>
