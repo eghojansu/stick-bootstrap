@@ -1,5 +1,5 @@
-<?php $this->extend('dashboard.php') ?>
+<?php $this->extend('layout/dashboard') ?>
 
-<?php $this->block('content') ?>
-  <p>Welcome to dashboard.</p>
-<?php $this->endBlock() ?>
+<?php $this->start('content') ?>
+Welcome to the Dashboard, <?= $this->user['fullname'] ?>.
+<?php $this->stop() ?>

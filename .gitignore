@@ -2,5 +2,4 @@
 /var/
 /vendor/
 /xdev/
-/.env.php
 /.php_cs.cache

@@ -1,5 +1,5 @@
-<?php $this->extend('front.php') ?>
+<?php $this->extend('layout/front') ?>
 
-<?php $this->block('content') ?>
-  Welcome.
-<?php $this->endBlock() ?>
+<?php $this->start('content') ?>
+Home
+<?php $this->stop() ?>

@@ -3,10 +3,12 @@
     "description": "Stick Framework Bootstrap",
     "license": "MIT",
     "type": "project",
-    "author": [{
-        "name": "Eko Kurniawan",
-        "email": "ekokurniawanbs@gmail.com"
-    }],
+    "author": [
+        {
+            "name": "Eko Kurniawan",
+            "email": "ekokurniawanbs@gmail.com"
+        }
+    ],
     "repositories": [
         {
             "type": "path",
@@ -15,11 +17,11 @@
     ],
     "autoload": {
         "psr-4": {
-            "App\\": "app/_src/"
+            "App\\": "app/src/"
         }
     },
     "require": {
         "php": ">=7.1",
-        "eghojansu/stick": "dev-master"
+        "eghojansu/stick": "@dev"
     }
 }

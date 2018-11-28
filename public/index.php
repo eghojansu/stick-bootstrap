@@ -1,8 +1,9 @@
 <?php
 
-$root = dirname(__DIR__).'/';
+require __DIR__.'/../vendor/autoload.php';
 
-require $root.'vendor/autoload.php';
-
-Fal\Stick\Library\Env::load($root.'.env.dist', $root.'.env');
-Fal\Stick\Fw::create()->config($root.'app/config/web.php')->run();
+Fal\Stick\Fw::createFromGlobals()
+    ->registerShutdownHandler()
+    ->config(__DIR__.'/../app/env.php')
+    ->run()
+;

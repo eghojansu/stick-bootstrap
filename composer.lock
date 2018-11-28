@@ -4,37 +4,52 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d200116700de3928ff8382e267e25a3",
+    "content-hash": "46a3b8f4dc698f4d42a7d1adfba076cc",
     "packages": [
         {
             "name": "eghojansu/stick",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/eghojansu/stick.git",
-                "reference": "61d79528ff9dda10527cf899c3299cf1adc35ef4"
-            },
+            "version": "dev-dev",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/eghojansu/stick/zipball/61d79528ff9dda10527cf899c3299cf1adc35ef4",
-                "reference": "61d79528ff9dda10527cf899c3299cf1adc35ef4",
-                "shasum": ""
+                "type": "path",
+                "url": "../stick",
+                "reference": "ff5bb2f3006854696142b2634937560fd32e0400",
+                "shasum": null
             },
             "require": {
                 "php": ">=7.1"
             },
+            "require-dev": {
+                "ext-gd": "*",
+                "ext-mysql": "*",
+                "ext-pdo": "*",
+                "ext-sqlite3": "*",
+                "ext-zip": "*",
+                "phpunit/phpunit": "^7.4"
+            },
+            "suggest": {
+                "ext-gd": "Image manipulation",
+                "ext-pdo": "Mapper helper",
+                "ext-zip": "Zip helper"
+            },
+            "bin": [
+                "stick"
+            ],
             "type": "library",
             "autoload": {
                 "psr-4": {
                     "Fal\\Stick\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Fal\\Stick\\Test\\": "tests/src/",
+                    "Fixture\\": "tests/fixture/classes/"
+                }
+            },
             "license": [
                 "MIT"
             ],
-            "description": "Stick~to~PHP Framework",
-            "time": "2018-10-18T14:00:01+00:00"
+            "description": "Stick~to~PHP Framework"
         }
     ],
     "packages-dev": [],
