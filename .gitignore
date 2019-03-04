@@ -3,3 +3,4 @@
 /vendor/
 /xdev/
 /.php_cs.cache
+/.env.php

@@ -1,9 +1,9 @@
 <?php
 
-require __DIR__.'/../vendor/autoload.php';
+use Fal\Stick\Web\Kernel as Abcd; // -> it is just for fun
 
-Fal\Stick\Fw::createFromGlobals()
-    ->registerShutdownHandler()
-    ->config(__DIR__.'/../app/env.php')
-    ->run()
-;
+$config = require __DIR__.'/../config/bootstrap.php';
+
+Abcd::create($config['env'], $config['debug'], $config['config'])
+    ->config($config['file'][$config['env']], true)
+    ->run();
