@@ -57,9 +57,8 @@ function executeSchema($db, $schema) {
     $pdo = $db->pdo();
 
     echo 'Executing '.$schema.' schema...';
-    echo PHP_EOL;
-    echo '  Result: ';
-    var_export($pdo->exec($content = file_get_contents($schemas[$schema])));
+    $pdo->exec(file_get_contents($schemas[$schema]));
+    echo 'done';
     echo PHP_EOL;
 
     if ('00000' !== $pdo->errorCode()) {
@@ -68,7 +67,4 @@ function executeSchema($db, $schema) {
             echo PHP_EOL;
         }
     }
-
-    echo 'done';
-    echo PHP_EOL;
 }
