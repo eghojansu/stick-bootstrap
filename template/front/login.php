@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <meta name="author" content="Eko Kurniawan">
   <meta name="theme-color" content="#008000">
-  <title>Login - <?= $this->app->name; ?></title>
-  <link rel="stylesheet" href="<?= $this->app->asset('assets/bootstrap/css/bootstrap.min.css') ?>">
+  <title>Login - <?= $this->app->store['name']; ?></title>
+  <link rel="stylesheet" href="<?= $this->app->asset('bootstrap/css/bootstrap.min.css') ?>">
 </head>
 <body>
   <div style="max-width: 400px; margin: 40px auto">
@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <script src="<?= $this->app->asset('assets/jquery.min.js') ?>"></script>
-  <script src="<?= $this->app->asset('assets/bootstrap/js/bootstrap.min.js') ?>"></script>
+  <script src="<?= $this->app->asset('jquery.min.js') ?>"></script>
+  <script src="<?= $this->app->asset('bootstrap/js/bootstrap.min.js') ?>"></script>
 </body>
 </html>

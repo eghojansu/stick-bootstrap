@@ -2,9 +2,8 @@
 
 namespace App\Controller;
 
+use App\App;
 use App\Form\ProfileForm;
-use Fal\Stick\Web\Helper\Crud;
-use Fal\Stick\Web\Request;
 
 class DashboardController
 {
@@ -13,11 +12,9 @@ class DashboardController
         return $app->render('dashboard/home');
     }
 
-    public function profile(App $app, ProfileForm $form, Request $request)
+    public function profile(App $app, ProfileForm $form)
     {
-        $form->handle($request, $app->user->toArray(), array(
-            'dashboard' => $app->path('dashboard'),
-        ));
+        $form->handle($app->currentRequest, $app->user->toArray());
 
         if ($form->isSubmitted() && $form->valid()) {
             $data = $form->getValidatedData();
@@ -31,12 +28,15 @@ class DashboardController
             return $app->success('Profile has been updated.');
         }
 
-        return $app->render('dashboard/profile', compact('form'));
+        return $app->render('dashboard/form', array(
+            'title' => 'Profile',
+            'form' => $form,
+        ));
     }
 
-    public function users(App $app, Crud $crud)
+    public function users(App $app)
     {
-        return $crud
+        return $app->crud
             ->mapper('App\\Mapper\\User')
             ->form('App\\Form\\UserForm')
             ->searchable('fullname ~, |username ~')
@@ -44,12 +44,12 @@ class DashboardController
             ->filters(array(
                 'id <>' => $app->user['id'],
             ))
-            ->beforeCreate(function () use ($app, $crud) {
+            ->onBeforeCreate(function ($crud) use ($app) {
                 return array(
                     'password' => $app->auth->getEncoder()->hash($crud->form['password']),
                 );
             })
-            ->beforeUpdate(function () use ($app, $crud) {
+            ->onBeforeUpdate(function ($crud) use ($app) {
                 if ($password = $crud->form['password']) {
                     $password = $app->auth->getEncoder()->hash($password);
                 } else {

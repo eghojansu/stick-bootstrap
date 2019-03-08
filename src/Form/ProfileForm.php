@@ -26,16 +26,6 @@ class ProfileForm extends Form
             ->addField('old_password', 'password', array(
                 'constraints' => 'trim|required|password',
             ))
-            ->addButton('update', 'submit', array(
-                'attr' => array(
-                    'class' => 'btn btn-primary',
-                ),
-            ))
-            ->addButton('cancel', 'link', array(
-                'attr' => array(
-                    'href' => $options['dashboard'],
-                ),
-            ))
         ;
     }
 }

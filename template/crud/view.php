@@ -7,7 +7,7 @@
 <br>
 <br>
 
-<?= $this->alerts() ?>
+<?= $this->app->alerts() ?>
 
 <table class="table table-bordered">
   <tbody>

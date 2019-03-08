@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
+use App\App;
 use App\Form\LoginForm;
-use Fal\Stick\Web\Request;
 
 class FrontController
 {
@@ -12,11 +12,11 @@ class FrontController
         return $app->render('front/home');
     }
 
-    public function login(App $app, LoginForm $form, Request $request)
+    public function login(App $app, LoginForm $form)
     {
         $message = null;
 
-        $form->handle($request, null, array(
+        $form->handle($app->currentRequest, null, array(
             'home' => $app->path('home'),
         ));
 

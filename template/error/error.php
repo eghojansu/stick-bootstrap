@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <meta name="author" content="Eko Kurniawan">
   <title><?= $code.' - '.$status ?></title>
-  <link rel="stylesheet" href="<?= $this->app->asset('assets/bootstrap/css/bootstrap.min.css') ?>">
+  <link rel="stylesheet" href="<?= $this->app->asset('bootstrap/css/bootstrap.min.css') ?>">
 </head>
 
 <body>

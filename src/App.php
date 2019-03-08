@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App;
 
 use Fal\Stick\Container\ContainerInterface;
 use Fal\Stick\Helper\ValueStore;
@@ -24,14 +24,44 @@ class App
         $this->user = $auth->getUser();
     }
 
-    public function __get($config)
+    public function __get($service)
     {
-        return $this->store[$config];
+        return $this->container->get($service);
+    }
+
+    public function load(string $table)
+    {
+        return $this->container->get('Fal\\Stick\\Database\\Mapper', array(
+            'name' => $table,
+        ));
     }
 
     public function render(string $view, array $context = null)
     {
         return Response::create($this->container->get('template')->render($view, $context));
+    }
+
+    public function error(int $code = null, string $message = null)
+    {
+        $codes = array(
+            403 => 'Fal\\Stick\\Web\\Exception\\ForbiddenException',
+            404 => 'Fal\\Stick\\Web\\Exception\\NotFoundException',
+        );
+
+        if (isset($codes[$code])) {
+            $exception = $codes[$code];
+            $arguments = $message ? array($message) : array();
+        } else {
+            $exception = 'Fal\\Stick\\Web\\Exception\\HttpException';
+            $arguments = array($message, $code ?? 500);
+        }
+
+        throw new $exception(...$arguments);
+    }
+
+    public function redirect($target = null)
+    {
+        return $this->container->get('urlGenerator')->redirect($target);
     }
 
     public function path($route, $parameters = null)
@@ -41,7 +71,7 @@ class App
 
     public function asset($path)
     {
-        return $this->container->get('urlGenerator')->asset($path);
+        return $this->container->get('urlGenerator')->asset('assets/'.$path);
     }
 
     public function notify(string $message, $target = null, string $alert = 'alerts_success')
@@ -64,6 +94,11 @@ class App
     public function warning(string $message, $target = null)
     {
         return $this->notify($message, $target, 'alerts_warning');
+    }
+
+    public function info(string $message, $target = null)
+    {
+        return $this->notify($message, $target, 'alerts_info');
     }
 
     public function alerts(array $messages = null)
