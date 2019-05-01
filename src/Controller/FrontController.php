@@ -2,28 +2,31 @@
 
 namespace App\Controller;
 
-use App\App;
-use App\Form\LoginForm;
+use Fal\Stick\Fw;
 
 class FrontController
 {
-    public function home(App $app)
+    public function home(Fw $fw)
     {
-        return $app->render('front/home');
+        return $fw->template->render('front/home.html');
     }
 
-    public function login(App $app, LoginForm $form)
+    public function login(Fw $fw)
     {
-        $message = null;
-
-        $form->handle($app->currentRequest, null, array(
-            'home' => $app->path('home'),
-        ));
-
-        if ($form->isSubmitted() && $form->valid() && $app->auth->attempt($form['username'], $form['password'], false, $message)) {
-            return $app->success('Login success.', 'dashboard');
+        if ($fw->auth->login($fw->isMethod('post'))) {
+            return $fw->reroute('dashboard');
         }
 
-        return $app->render('front/login', compact('form', 'message'));
+        return $fw->template->render('front/login.html', array(
+            'message' => $fw->auth->error(),
+        ));
+    }
+
+    public function logout(Fw $fw)
+    {
+        $fw->auth->logout();
+        $fw->rem('SESSION');
+
+        return $fw->reroute('home');
     }
 }

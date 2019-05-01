@@ -2,44 +2,44 @@
 
 namespace App\Mapper;
 
-use Fal\Stick\Database\Mapper;
-use Fal\Stick\Web\Security\UserInterface;
-use Fal\Stick\Web\Security\UserProviderInterface;
+use Fal\Stick\Db\Pdo\Mapper;
+use Fal\Stick\Security\UserInterface;
+use Fal\Stick\Security\UserProviderInterface;
 
 class User extends Mapper implements UserProviderInterface, UserInterface
 {
     public function findByUsername($username): ?UserInterface
     {
-        return $this->first(array('username' => $username))->valid() ? $this : null;
+        return $this->findOneByUsername($username)->found() ? $this : null;
     }
 
     public function findById($id): ?UserInterface
     {
-        return $this->first(array('id' => $id))->valid() ? $this : null;
+        return $this->findOneById($id)->found() ? $this : null;
     }
 
     public function getId(): string
     {
-        return $this['id'] ?? '';
+        return (string) $this->id;
     }
 
     public function getUsername(): string
     {
-        return $this['username'] ?? '';
+        return (string) $this->username;
     }
 
     public function getPassword(): string
     {
-        return $this['password'] ?? '';
+        return (string) $this->password;
     }
 
     public function getRoles(): array
     {
-        return explode(',', $this['roles'] ?? '');
+        return explode(',', (string) $this->roles);
     }
 
     public function isCredentialsExpired(): bool
     {
-        return !$this['active'];
+        return !$this->active;
     }
 }

@@ -2,28 +2,27 @@
 
 namespace App\Form;
 
-use Fal\Stick\Web\Form\Form;
+use Fal\Stick\Form\Form;
+use Fal\Stick\Util\Option;
 
 class ProfileForm extends Form
 {
     /**
      * {@inheritdoc}
      */
-    protected function build(array $options, array $data)
+    protected function build(Option $option)
     {
-        $id = $data['id'] ?? null;
-
         $this
-            ->addField('fullname', 'text', array(
+            ->set('fullname', 'text', array(
                 'constraints' => 'trim|required',
             ))
-            ->addField('username', 'text', array(
-                'constraints' => 'trim|required|unique:user,username,id,'.$id,
+            ->set('username', 'text', array(
+                'constraints' => 'trim|required|unique:user,username,id,'.$this['id'],
             ))
-            ->addField('new_password', 'password', array(
+            ->set('new_password', 'password', array(
                 'constraints' => 'trim|lenMin:5',
             ))
-            ->addField('old_password', 'password', array(
+            ->set('old_password', 'password', array(
                 'constraints' => 'trim|required|password',
             ))
         ;

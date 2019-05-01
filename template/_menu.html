@@ -1,0 +1,12 @@
+{~ @_o = '<i class="fa fa-circle-o"></i>' ~}
+{~ @_menu = array(
+  'Dashboard' => 'dashboard',
+  'Manage User' => 'users',
+) ~}
+{~ @_config = array(
+  'root_attr' => array(
+    'class' => 'nav navbar-nav',
+  ),
+) ~}
+
+{{ @_.menu->build(@_menu, @_.menu_active ?? @_.ALIAS, @_config) }}

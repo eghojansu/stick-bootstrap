@@ -2,56 +2,56 @@
 
 namespace App\Controller;
 
-use App\App;
 use App\Form\ProfileForm;
+use Fal\Stick\Fw;
 
 class DashboardController
 {
-    public function home(App $app)
+    public function home(Fw $fw)
     {
-        return $app->render('dashboard/home');
+        return $fw->template->render('dashboard/home.html');
     }
 
-    public function profile(App $app, ProfileForm $form)
+    public function profile(Fw $fw)
     {
-        $form->handle($app->currentRequest, $app->user->toArray());
+        $form = $fw->form('Profile', $fw->user->toArray());
 
         if ($form->isSubmitted() && $form->valid()) {
             $data = $form->getValidatedData();
 
             if ($data['new_password']) {
-                $data['password'] = $app->auth->getEncoder()->hash($data['new_password']);
+                $data['password'] = $fw->auth->encoder->hash($data['new_password']);
             }
 
-            $app->user->fromArray($data)->save();
+            $fw->user->fromArray($data)->save();
 
-            return $app->success('Profile has been updated.');
+            return $fw->app->success('Profile has been updated.');
         }
 
-        return $app->render('dashboard/form', array(
-            'title' => 'Profile',
+        return $fw->template->render('dashboard/profile.html', array(
             'form' => $form,
         ));
     }
 
-    public function users(App $app)
+    public function users(Fw $fw)
     {
-        return $app->crud
-            ->mapper('App\\Mapper\\User')
-            ->form('App\\Form\\UserForm')
+        return $fw->crud
+            ->mapper($fw->mapper('User'))
+            ->form($fw->form('User'))
             ->searchable('fullname ~, |username ~')
             ->field('listing,view,delete', 'fullname,username,roles,active')
             ->filters(array(
-                'id <>' => $app->user['id'],
+                'id <>' => $fw->user->id,
             ))
-            ->onBeforeCreate(function ($crud) use ($app) {
+            ->onBeforeCreate(function ($crud) {
                 return array(
-                    'password' => $app->auth->getEncoder()->hash($crud->form['password']),
+                    'roles' => $crud->form['roles'] ?? 'ROLE_ADMIN',
+                    'password' => $crud->auth->encoder->hash($crud->form['password']),
                 );
             })
-            ->onBeforeUpdate(function ($crud) use ($app) {
+            ->onBeforeUpdate(function ($crud) {
                 if ($password = $crud->form['password']) {
-                    $password = $app->auth->getEncoder()->hash($password);
+                    $password = $crud->auth->encoder->hash($password);
                 } else {
                     $password = $crud->mapper['password'];
                 }

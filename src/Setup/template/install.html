@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Installation</title>
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="{{ 'bootstrap/css/bootstrap.min.css' | asset }}">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-2">
+        <h1 class="page-header">Installation</h1>
+        <br>
+        <br>
+        <check if="{{ @finish }}">
+          <true>
+            <div class="alert alert-success">
+              <strong>Congratulations!</strong><br>
+              Installation complete.<br><br>
+              Current version: <strong>{{ @version }}</strong><br><br>
+              <a class="btn btn-success" href="{{ 'home'|path }}">Yeay! Go to dashboard</a>
+            </div>
+          </true>
+          <false>
+            <p>You are about to install to version <strong class="text-danger">{{ @targetVersion }}</strong> (installed: <strong class="text-success">{{ @version }}</strong>).</p>
+            <p><em>Please fill configuration below to continue installation process.</em></p>
+            <br>
+            {{ @form->render() }}
+          </false>
+        </check>
+      </div>
+    </div>
+  </div>
+
+  <div id="information" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Information</h4>
+        </div>
+        <div class="modal-body">
+          Installation on progress, please wait...
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <script src="{{ 'jquery.min.js' | asset }}"></script>
+  <script src="{{ 'bootstrap/js/bootstrap.min.js' | asset }}"></script>
+  <script>
+    $('input[name=install_from_beginning]').on('change', function(e) {
+      if (this.checked && !confirm('You are about to install from beginning. Are you sure?')) {
+        this.checked = false;
+      }
+    });
+    $('form').on('submit', function(e) {
+      $('#information').modal('show');
+    });
+  </script>
+</body>
+</html>

@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <meta name="author" content="Eko Kurniawan">
   <meta name="theme-color" content="#008000">
-  <title><?php $this->start('title') ?>Dashboard - <?= $this->app->store['name'] ?><?php $this->stop() ?></title>
-  <link rel="stylesheet" href="<?= $this->app->asset('bootstrap/css/bootstrap.min.css') ?>">
+  <title><block name="title">Dashboard</block> - {{ @_.store.name }}</title>
+  <link rel="stylesheet" href="{{ 'bootstrap/css/bootstrap.min.css' | asset }}">
 </head>
 <body>
   <nav class="navbar navbar-default">
@@ -20,18 +20,12 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="<?= $this->app->path('home') ?>"><?= $this->app->store['name'] ?></a>
+        <a class="navbar-brand" href="{{ 'home' | path }}">{{ @_.store.name }}</a>
       </div>
 
       <div class="collapse navbar-collapse" id="collapse-one">
-        <ul class="nav navbar-nav">
-          <li><a href="<?= $this->app->path('dashboard') ?>">Dashboard</a></li>
-          <li><a href="<?= $this->app->path('users', 'segments=index') ?>">Manage User</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="<?= $this->app->path('profile') ?>">Profile</a></li>
-          <li><a href="<?= $this->app->path('logout') ?>">Logout</a></li>
-        </ul>
+        <include href="_menu.html" />
+        <include href="_menu_account.html" />
       </div>
     </div><!-- /.container -->
   </nav>
@@ -39,14 +33,14 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-12">
-        <?php $this->start('content') ?>
+        <block name="content">
           Page content.
-        <?php $this->stop() ?>
+        </block>
       </div>
     </div>
   </div>
 
-  <script src="<?= $this->app->asset('jquery.min.js') ?>"></script>
-  <script src="<?= $this->app->asset('bootstrap/js/bootstrap.min.js') ?>"></script>
+  <script src="{{ 'jquery.min.js' | asset }}"></script>
+  <script src="{{ 'bootstrap/js/bootstrap.min.js' | asset }}"></script>
 </body>
 </html>

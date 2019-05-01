@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="author" content="Eko Kurniawan">
+  <meta name="theme-color" content="#008000">
+  <title>{{ @_.ERROR.code.' '.@_.ERROR.status }}</title>
+  <link rel="stylesheet" href="{{ 'bootstrap/css/bootstrap.min.css' | asset }}">
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-2">
+        <div class="error-page">
+          <h2 class="text-danger">Oops! {{ @_.ERROR.status }} [{{ @_.ERROR.code }}]</h2>
+
+          <div class="error-content">
+            <p><em>{{ @_.ERROR.text }}</em></p>
+            <p>Not sure about what's happening? Please <a href="{{ '/'|path }}">return to dashboard</a>.</p>
+
+            <check if="{{ @_.DEBUG }}">
+              <pre>{{ @_.ERROR.debug }}</pre>
+            </check>
+          </div>
+          <!-- /.error-content -->
+        </div>
+        <!-- /.error-page -->
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<extends href="dashboard.html" />
+
+<block name="content">
+  <h1>{{ @crud->title }}</h1>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <form class="form-inline">
+        <div class="form-group">
+          <label for="keyword" class="sr-only">Keyword</label>
+          <input type="text" class="form-control" id="keyword" name="keyword" placeholder="Keyword" value="{{ @crud->keyword | raw }}">
+        </div>
+        <div class="form-group">
+          <button class="btn btn-default">Search</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-sm-6 text-right">
+      <div class="btn-group">
+        <a href="{{ @crud->path('create') }}" class="btn btn-primary">Create</a>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <alerts />
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>No</th>
+        <repeat group="{{ @crud->fields }}" value="{{ @field }}">
+          <th>{{ @field.label }}</th>
+        </repeat>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <set no="{{ @crud->data['start'] }}" />
+      <repeat group="{{ @crud->data['subset'] }}" value="{{ @item }}">
+        <tr>
+          <td>{{ @no++ }}</td>
+          <repeat group="{{ @crud->fields }}" value="{{ @field }}">
+            <td>{{ @item[@field.name] }}</td>
+          </repeat>
+          <td>
+            <a href="{{ @crud->path('view/'.@item['id']) }}" class="btn btn-sm btn-success">Detail</a>
+            <a href="{{ @crud->path('update/'.@item['id']) }}" class="btn btn-sm btn-info">Edit</a>
+            <a href="{{ @crud->path('delete/'.@item['id']) }}" class="btn btn-sm btn-danger">Delete</a>
+          </td>
+        </tr>
+        <otherwise>
+          <tr><td colspan="{{ count(@crud->fields) + 2 }}">No data.</td></tr>
+        </otherwise>
+      </repeat>
+    </tbody>
+  </table>
+
+  <div class="text-right">
+    {{ @_->pagination->build(@crud->data['page'], @crud->data['pages']) }}
+  </div>
+</block>

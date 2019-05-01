@@ -2,33 +2,30 @@
 
 namespace App\Form;
 
-use Fal\Stick\Web\Form\Form;
+use App\Data;
+use Fal\Stick\Form\Form;
+use Fal\Stick\Util\Option;
 
 class UserForm extends Form
 {
     /**
      * {@inheritdoc}
      */
-    protected function build(array $options, array $data)
+    protected function build(Option $options)
     {
-        $id = $data['id'] ?? null;
-
         $this
-            ->addField('fullname', 'text', array(
+            ->set('fullname', 'text', array(
                 'constraints' => 'trim|required',
             ))
-            ->addField('username', 'text', array(
-                'constraints' => 'trim|required|unique:user,username,id,'.$id,
+            ->set('username', 'text', array(
+                'constraints' => 'trim|required|unique:user,username,id,'.$this['id'],
             ))
-            ->addField('password', 'password', array(
-                'constraints' => $id ? null : 'required',
+            ->set('password', 'password', array(
+                'constraints' => $this['id'] ? null : 'required',
             ))
-            ->addField('roles', 'choice', array(
+            ->set('roles', 'choice', array(
                 'constraints' => 'required',
-                'items' => array(
-                    'Administrator' => 'Admin',
-                    'Operator' => 'Operator',
-                ),
+                'items' => Data::ROLES,
                 'expanded' => true,
                 'multiple' => true,
                 'transformer' => function ($val) {
@@ -38,13 +35,10 @@ class UserForm extends Form
                     return implode(',', (array) $val);
                 },
             ))
-            ->addField('active', 'checkbox', array(
-                'attr' => array(
-                    'value' => 1,
-                ),
-                'reverse_transformer' => function ($val) {
-                    return $val ? '1' : '0';
-                },
+            ->set('active', 'choice', array(
+                'items' => Data::YES,
+                'expanded' => true,
+                'constraints' => 'required',
             ))
         ;
     }

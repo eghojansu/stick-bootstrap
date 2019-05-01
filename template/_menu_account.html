@@ -1,0 +1,12 @@
+{~ @_o = '<i class="fa fa-circle-o"></i>' ~}
+{~ @_menu = array(
+  'Profile' => 'profile',
+  'Logout' => 'logout',
+) ~}
+{~ @_config = array(
+  'root_attr' => array(
+    'class' => 'nav navbar-nav navbar-right',
+  ),
+) ~}
+
+{{ @_.menu->build(@_menu, @_.menu_active ?? @_.ALIAS, @_config) }}

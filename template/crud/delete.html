@@ -1,0 +1,25 @@
+<extends href="dashboard.html" />
+
+<block name="content">
+  <h1>{{ @crud->title }}</h1>
+
+  <alerts />
+
+  <table class="table table-bordered">
+    <tbody>
+      <repeat group="{{ @crud->fields }}" value="{{ @field }}">
+        <tr>
+          <th>{{ @field.label }}</th>
+          <td>{{ @crud->mapper[@field.name] }}</td>
+        </tr>
+      </repeat>
+    </tbody>
+  </table>
+
+  <p><em>Are you sure?</em></p>
+
+  <form method="post">
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="{{ @crud->path() }}" class="btn btn-default">Cancel</a>
+  </form>
+</block>
