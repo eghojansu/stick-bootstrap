@@ -10,7 +10,13 @@ class Listener
     {
         $requestInstall = 0 === strpos($fw['PATH'], '/install');
 
-        if ($fw->app->installed()) {
+        if ($fw->app->isInstalled()) {
+            if ($fw->app->isMaintenance() && '/logout' !== $fw['PATH']) {
+                $fw->status(503)->expire(0)->set('OUTPUT', $fw->template->render('maintenance.html'));
+
+                return false;
+            }
+
             if ($requestInstall) {
                 $fw->reroute('home');
 

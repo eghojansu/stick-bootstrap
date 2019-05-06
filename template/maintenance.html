@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="author" content="Eko Kurniawan">
+  <meta name="theme-color" content="#008000">
+  <title>Maintenance</title>
+  <link rel="stylesheet" href="{{ 'bootstrap/css/bootstrap.min.css' | asset }}">
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-2">
+        <h1 class="page-header text-danger">Maintenance</h1>
+        <div class="alert alert-danger">
+          <strong>Info!</strong> This site is under maintenance.<br>
+          Please come back later on {{ @_.store.maintenance }}.
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

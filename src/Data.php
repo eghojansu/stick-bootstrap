@@ -13,6 +13,7 @@ class Data
     );
     const ROLES = array(
         'ROLE_ADMIN' => 'ROLE_ADMIN',
+        'ROLE_USER' => 'ROLE_USER',
     );
 
     public static function choose(Fw $fw, $value, $constant)

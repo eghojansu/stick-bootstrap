@@ -25,7 +25,7 @@ class DashboardController
 
             $fw->user->fromArray($data)->save();
 
-            return $fw->app->success('Profile has been updated.');
+            return $fw->app->alertSuccess('Profile has been updated.');
         }
 
         return $fw->template->render('dashboard/profile.html', array(
@@ -35,6 +35,8 @@ class DashboardController
 
     public function users(Fw $fw)
     {
+        $fw->auth->denyAccessUnlessGranted('ROLE_ADMIN');
+
         return $fw->crud
             ->mapper($fw->mapper('User'))
             ->form($fw->form('User'))

@@ -1,10 +1,16 @@
+{~ @_caret = ' <span class="caret"></span>' ~}
 {~ @_menu = array(
-  'Profile' => 'profile',
-  'Logout' => 'logout',
+  'Dashboard' => 'dashboard',
+  'Setting'.@_caret => array(
+    'roles' => 'ROLE_ADMIN',
+    'items' => array(
+      'Manage User' => 'users',
+    ),
+  ),
 ) ~}
 {~ @_config = array(
   'root_attr' => array(
-    'class' => 'nav navbar-nav navbar-right',
+    'class' => 'nav navbar-nav',
   ),
   'parent_attr' => array(
     'class' => 'dropdown',

@@ -8,28 +8,61 @@ use Fal\Stick\Fw;
 interface SetupInterface
 {
     /**
-     * Returns version.
+     * Execute prepare for version setup.
+     *
+     * @param  Fw     $fw
+     * @param  array  $versions
+     */
+    public function prepare(Fw $fw, array $versions);
+
+    /**
+     * Execute install for version setup.
+     *
+     * @param  Fw     $fw
+     * @param  array  $versions
+     */
+    public function install(Fw $fw, array $versions);
+
+    /**
+     * Returns form.
+     *
+     * @return Form
+     */
+    public function getForm(): Form;
+
+    /**
+     * Add configuration to commit.
+     *
+     * @param string $group
+     * @param array  $config
+     */
+    public function addGroup(string $group, array $config);
+
+    /**
+     * Returns configuration to write.
      *
      * @return string
      */
-    public function getVersion(): string;
+    public function stringify(): string;
 
     /**
-     * Prepare installer.
+     * Returns true if form submitted and valid.
      *
-     * @param  Fw     $fw
-     * @param  Form   $form
-     *
-     * @return void
+     * @return bool
      */
-    public function prepare(Fw $fw, Form $form): void;
+    public function isSubmitted(): bool;
 
     /**
-     * Installation logic.
+     * Returns true if setup require install from beginning.
      *
-     * @param  SqlExecutor  $exec
-     *
-     * @return array
+     * @return bool
      */
-    public function install(SqlExecutor $exec): array;
+    public function installFromBeginning(): bool;
+
+    /**
+     * Run sql query.
+     *
+     * @param string $sql
+     */
+    public function execSql(string $sql);
 }

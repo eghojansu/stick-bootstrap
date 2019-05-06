@@ -2,5 +2,6 @@
     "name": "App name",
     "desc": "App desc",
     "company": "Your company",
-    "year": 2018
+    "year": 2018,
+    "maintenance": null
 }

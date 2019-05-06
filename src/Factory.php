@@ -62,24 +62,27 @@ class Factory
         $validator = new Validator($fw);
         $validator->add(new CommonRule());
 
-        if ($fw->app->installed()) {
+        if ($fw->app->isInstalled()) {
             $validator->add(new MapperRule($fw->db), new AuthRule($fw->auth));
         }
 
         return $validator;
     }
 
-    public static function db(Fw $fw)
+    public static function dbSqlite(Fw $fw)
     {
         $db = $fw->DB;
-
-        // $dsn = 'mysql:host='.$db['host'].';port='.$db['port'].';dbname='.$db['dbname'];
-        //
-        // return new Db($fw, new MysqlDriver(), $dsn, $db['username'], $db['password']);
-
         $dsn = 'sqlite:'.$db['path'];
 
         return new Db($fw, new SqliteDriver(), $dsn);
+    }
+
+    public static function dbMysql(Fw $fw)
+    {
+        $db = $fw->DB;
+        $dsn = 'mysql:host='.$db['host'].';port='.$db['port'].';dbname='.$db['dbname'];
+
+        return new Db($fw, new MysqlDriver(), $dsn, $db['username'], $db['password']);
     }
 
     public static function auth(Fw $fw)
@@ -87,10 +90,13 @@ class Factory
         return new Auth($fw, self::mapper($fw, 'User'), new BcryptPasswordEncoder(), array(
             'rules' => array(
                 '^/dashboard' => array(
-                    'roles' => 'ROLE_ADMIN',
+                    'roles' => 'ROLE_USER',
                     'login' => '/login',
                     'home' => '/dashboard',
                 ),
+            ),
+            'role_hierarchy' => array(
+                'ROLE_ADMIN' => 'ROLE_USER',
             ),
         ));
     }
@@ -118,7 +124,7 @@ class Factory
 
     public static function menu(Fw $fw)
     {
-        return new MenuList($fw);
+        return new MenuList($fw, $fw->auth);
     }
 
     public static function pagination(Fw $fw)
