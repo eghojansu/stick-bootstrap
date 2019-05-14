@@ -8,6 +8,7 @@ use Fal\Stick\Fw;
 
 class MysqlSetup implements SetupInterface
 {
+    protected $requiredDriver = 'mysql';
     protected $commitPrefix = array(
         'db_' => 'DB',
     );
@@ -19,7 +20,7 @@ class MysqlSetup implements SetupInterface
 
     public function __construct(Fw $fw)
     {
-        $this->initial = self::overrideInitial($fw, $this->commitPrefix, array(
+        $this->initial = static::overrideInitial($fw, $this->commitPrefix, array(
             'db_host'  => 'localhost',
             'db_port' => '3306',
             'db_username'  => 'root',
@@ -28,6 +29,115 @@ class MysqlSetup implements SetupInterface
         ));
         $this->fw = $fw;
         $this->form = $fw->form('install', $this->initial);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prepare(Fw $fw, array $versions)
+    {
+        $this->prepareInitial();
+
+        foreach ($versions as $version) {
+            $version->prepare($fw, $this);
+        }
+
+        $this->finishForm();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function install(Fw $fw, array $versions)
+    {
+        $this->commitInitial();
+        $this->connect();
+
+        foreach ($versions as $version) {
+            $version->install($fw, $this);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getForm(): Form
+    {
+        return $this->form;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addGroup(string $group, array $config)
+    {
+        $this->commit = array_replace_recursive($this->commit, array($group => $config));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function stringify(): string
+    {
+        $str = '';
+        $globals = "[GLOBALS]\n";
+        $line = function($key, $arg) {
+            if (is_string($arg)) {
+                $arg = str_replace(array('"', "'"), '', $arg);
+            } elseif (is_array($arg)) {
+                $arg = implode(',', $arg);
+            }
+
+            return sprintf("%s = %s\n", $key, $arg);
+        };
+
+        foreach ($this->commit as $key => $value) {
+            if (is_array($value)) {
+                $tmp = sprintf("[%s]\n", $key);
+
+                foreach ($value as $key2 => $value2) {
+                    $tmp .= $line($key2, $value2);
+                }
+
+                $str .= $tmp;
+            } else {
+                $globals .= $line($key, $value);
+            }
+        }
+
+        return $str.$globals;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isSubmitted(): bool
+    {
+        return $this->form->isSubmitted() && $this->form->valid();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function installFromBeginning(): bool
+    {
+        return $this->form['install_from_beginning'] ?? false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function execSql(string $sql)
+    {
+        $this->driverCheck();
+
+        $pdo = $this->fw->db->pdo();
+        $pdo->exec($sql);
+        $error = $pdo->errorInfo();
+
+        if ('00000' !== $error[0]) {
+            throw new \LogicException(sprintf('[%s - %s] %s.', ...$error));
+        }
     }
 
     protected static function overrideInitial(Fw $fw, array $commit, array $initial)
@@ -153,110 +263,10 @@ class MysqlSetup implements SetupInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function prepare(Fw $fw, array $versions)
+    protected function driverCheck()
     {
-        $this->prepareInitial();
-
-        foreach ($versions as $version) {
-            $version->prepare($fw, $this);
-        }
-
-        $this->finishForm();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function install(Fw $fw, array $versions)
-    {
-        $this->commitInitial();
-        $this->connect();
-
-        foreach ($versions as $version) {
-            $version->install($fw, $this);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getForm(): Form
-    {
-        return $this->form;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addGroup(string $group, array $config)
-    {
-        $this->commit = array_replace_recursive($this->commit, array($group => $config));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function stringify(): string
-    {
-        $str = '';
-        $globals = "[GLOBALS]\n";
-        $line = function($key, $arg) {
-            if (is_string($arg)) {
-                $arg = str_replace(array('"', "'"), '', $arg);
-            } elseif (is_array($arg)) {
-                $arg = implode(',', $arg);
-            }
-
-            return sprintf("%s = %s\n", $key, $arg);
-        };
-
-        foreach ($this->commit as $key => $value) {
-            if (is_array($value)) {
-                $tmp = sprintf("[%s]\n", $key);
-
-                foreach ($value as $key2 => $value2) {
-                    $tmp .= $line($key2, $value2);
-                }
-
-                $str .= $tmp;
-            } else {
-                $globals .= $line($key, $value);
-            }
-        }
-
-        return $str.$globals;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isSubmitted(): bool
-    {
-        return $this->form->isSubmitted() && $this->form->valid();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function installFromBeginning(): bool
-    {
-        return $this->form['install_from_beginning'] ?? false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function execSql(string $sql)
-    {
-        $pdo = $this->fw->db->pdo();
-        $pdo->exec($sql);
-        $error = $pdo->errorInfo();
-
-        if ('00000' !== $error[0]) {
-            throw new \LogicException(sprintf('[%s - %s] %s.', ...$error));
+        if (false === stripos($driver = $this->fw->db->driver(), $this->requiredDriver)) {
+            throw new \LogicException(sprintf('Required %s driver, given %s driver.', $this->requiredDriver, $driver));
         }
     }
 }

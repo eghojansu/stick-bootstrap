@@ -6,6 +6,8 @@ use Fal\Stick\Fw;
 
 class SqliteSetup extends MysqlSetup
 {
+    protected $requiredDriver = 'sqlite';
+
     public function __construct(Fw $fw)
     {
         $this->initial = self::overrideInitial($fw, $this->commitPrefix, array(

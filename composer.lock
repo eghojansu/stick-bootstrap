@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/eghojansu/stick.git",
-                "reference": "d9a5db6c0a6252a97c63d1df5f6a403835f3f707"
+                "reference": "c08b1259d2eeed2619c092e166f93b25cfee6426"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eghojansu/stick/zipball/d9a5db6c0a6252a97c63d1df5f6a403835f3f707",
-                "reference": "d9a5db6c0a6252a97c63d1df5f6a403835f3f707",
+                "url": "https://api.github.com/repos/eghojansu/stick/zipball/c08b1259d2eeed2619c092e166f93b25cfee6426",
+                "reference": "c08b1259d2eeed2619c092e166f93b25cfee6426",
                 "shasum": ""
             },
             "require": {
@@ -26,6 +26,14 @@
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^2.14",
                 "phpunit/phpunit": "^8.0"
+            },
+            "suggest": {
+                "ext-apcu": "Needed to support apc/apcu cache engine",
+                "ext-curl": "Needed to support web request with cURL",
+                "ext-gd": "Needed to support image manipulation",
+                "ext-memcache": "Needed to support memcache cache engine",
+                "ext-memcached": "Needed to support memcached cache engine",
+                "ext-redis": "Needed to support redis cache engine"
             },
             "type": "library",
             "autoload": {
@@ -41,7 +49,7 @@
                 "MIT"
             ],
             "description": "Stick~to~PHP Framework",
-            "time": "2019-05-06T19:22:34+00:00"
+            "time": "2019-05-14T07:03:56+00:00"
         }
     ],
     "packages-dev": [
@@ -583,16 +591,16 @@
         },
         {
             "name": "symfony/contracts",
-            "version": "v1.0.2",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/contracts.git",
-                "reference": "1aa7ab2429c3d594dd70689604b5cf7421254cdf"
+                "reference": "d3636025e8253c6144358ec0a62773cae588395b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/contracts/zipball/1aa7ab2429c3d594dd70689604b5cf7421254cdf",
-                "reference": "1aa7ab2429c3d594dd70689604b5cf7421254cdf",
+                "url": "https://api.github.com/repos/symfony/contracts/zipball/d3636025e8253c6144358ec0a62773cae588395b",
+                "reference": "d3636025e8253c6144358ec0a62773cae588395b",
                 "shasum": ""
             },
             "require": {
@@ -600,19 +608,22 @@
             },
             "require-dev": {
                 "psr/cache": "^1.0",
-                "psr/container": "^1.0"
+                "psr/container": "^1.0",
+                "symfony/polyfill-intl-idn": "^1.10"
             },
             "suggest": {
                 "psr/cache": "When using the Cache contracts",
                 "psr/container": "When using the Service contracts",
                 "symfony/cache-contracts-implementation": "",
+                "symfony/event-dispatcher-implementation": "",
+                "symfony/http-client-contracts-implementation": "",
                 "symfony/service-contracts-implementation": "",
                 "symfony/translation-contracts-implementation": ""
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.1-dev"
                 }
             },
             "autoload": {
@@ -647,7 +658,7 @@
                 "interoperability",
                 "standards"
             ],
-            "time": "2018-12-05T08:06:11+00:00"
+            "time": "2019-04-27T14:29:50+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
