@@ -63,4 +63,49 @@ class DashboardController
             ->render()
         ;
     }
+
+    public function setting(Fw $fw)
+    {
+        $fw->auth->denyAccessUnlessGranted('ROLE_ADMIN');
+        $form = $fw->form('Setting', $fw->store->hive());
+
+        if ($form->isSubmitted() && $form->valid()) {
+            $fw->store->merge($form->getValidatedData())->commit();
+
+            return $fw->app->alertSuccess('Setting has been updated.');
+        }
+
+        return $fw->template->render('dashboard/setting.html', array(
+            'form' => $form,
+        ));
+    }
+
+    public function maintenance(Fw $fw)
+    {
+        $fw->auth->denyAccessUnlessGranted('ROLE_ADMIN');
+        $form = $fw->form('Maintenance', array(
+            'long' => 1,
+            'for' => null,
+            'message' => $fw->store->maintenance_message,
+        ));
+
+        if ($form->isSubmitted() && $form->valid()) {
+            $add = $form['long'].' '.$form['for'];
+
+            if ($timestamp = strtotime($add)) {
+                $fw->store->merge(array(
+                    'maintenance' => date('Y-m-d H:i:s', $timestamp),
+                    'maintenance_message' => $form['message'],
+                ))->commit();
+
+                return $fw->app->alertSuccess('Maintenance has been updated.');
+            }
+
+            return $fw->app->alertDanger('Invalid maintenance definition.');
+        }
+
+        return $fw->template->render('dashboard/maintenance.html', array(
+            'form' => $form,
+        ));
+    }
 }

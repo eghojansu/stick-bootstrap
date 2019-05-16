@@ -13,16 +13,16 @@ class ProfileForm extends Form
     protected function build(Option $option)
     {
         $this
-            ->set('fullname', 'text', array(
+            ->add('fullname', 'text', array(
                 'constraints' => 'trim|required',
             ))
-            ->set('username', 'text', array(
+            ->add('username', 'text', array(
                 'constraints' => 'trim|required|unique:user,username,id,'.$this['id'],
             ))
-            ->set('new_password', 'password', array(
+            ->add('new_password', 'password', array(
                 'constraints' => 'trim|lenMin:5',
             ))
-            ->set('old_password', 'password', array(
+            ->add('old_password', 'password', array(
                 'constraints' => 'trim|required|password',
             ))
         ;

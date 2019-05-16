@@ -16,6 +16,11 @@
         <h1 class="page-header text-danger">Maintenance</h1>
         <div class="alert alert-danger">
           <strong>Info!</strong> This site is under maintenance.<br>
+          <check if="{{ @message = @_.store.maintenance_message }}">
+            <br>
+            <em>{{ @message }}</em><br>
+            <br>
+          </check>
           Please come back later on {{ @_.store.maintenance }}.
         </div>
       </div>

@@ -15,6 +15,13 @@ class Data
         'ROLE_ADMIN' => 'ROLE_ADMIN',
         'ROLE_USER' => 'ROLE_USER',
     );
+    const TIMES = array(
+        'Minutes' => 'minutes',
+        'Hours' => 'hours',
+        'Days' => 'days',
+        'Weeks' => 'weeks',
+        'Months' => 'months',
+    );
 
     public static function choose(Fw $fw, $value, $constant)
     {

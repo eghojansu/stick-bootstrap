@@ -1,7 +1,7 @@
 <check if="{{ !isset(@back) }}">
   <set back="{{ 'dashboard' | path }}" />
 </check>
-<alerts type="success" />
+<alerts />
 {{ @form->open() }}
 {{ @form->rows() }}
 <check if="{{ @buttons = @form->buttons() }}">

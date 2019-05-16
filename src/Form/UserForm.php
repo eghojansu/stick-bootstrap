@@ -14,16 +14,16 @@ class UserForm extends Form
     protected function build(Option $options)
     {
         $this
-            ->set('fullname', 'text', array(
+            ->add('fullname', 'text', array(
                 'constraints' => 'trim|required',
             ))
-            ->set('username', 'text', array(
+            ->add('username', 'text', array(
                 'constraints' => 'trim|required|unique:user,username,id,'.$this['id'],
             ))
-            ->set('password', 'password', array(
+            ->add('password', 'password', array(
                 'constraints' => $this['id'] ? null : 'required',
             ))
-            ->set('roles', 'choice', array(
+            ->add('roles', 'choice', array(
                 'constraints' => 'required',
                 'items' => Data::ROLES,
                 'expanded' => true,
@@ -35,7 +35,7 @@ class UserForm extends Form
                     return implode(',', (array) $val);
                 },
             ))
-            ->set('active', 'choice', array(
+            ->add('active', 'choice', array(
                 'items' => Data::YES,
                 'expanded' => true,
                 'constraints' => 'required',

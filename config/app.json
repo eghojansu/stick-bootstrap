@@ -2,6 +2,7 @@
     "name": "App name",
     "desc": "App desc",
     "company": "Your company",
-    "year": 2018,
-    "maintenance": null
+    "year": 2019,
+    "maintenance": null,
+    "maintenance_message": null
 }
