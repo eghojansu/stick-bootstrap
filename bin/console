@@ -5,6 +5,9 @@ use Fal\Stick\Cli\Command;
 use Fal\Stick\Cli\Console;
 
 $fw = (require __DIR__.'/../config/bootstrap.php')->emulateCliRequest();
+
+chdir($fw->project_dir);
+
 (new Console($fw))
     ->add(
         Command::create('run', function($console, $input) {
@@ -14,11 +17,7 @@ $fw = (require __DIR__.'/../config/bootstrap.php')->emulateCliRequest();
                 '-S',
                 $address,
                 '-t',
-                preg_replace(
-                    '/^'.preg_quote($console->fw->project_dir, '/').'/',
-                    '',
-                    getcwd()
-                ).'public',
+                'public',
             ));
 
             $console->writeln("Executing <comment>$command</>");
