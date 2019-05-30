@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Form\ProfileForm;
 use Fal\Stick\Fw;
 
 class DashboardController
@@ -67,7 +66,7 @@ class DashboardController
     public function setting(Fw $fw)
     {
         $fw->auth->denyAccessUnlessGranted('ROLE_ADMIN');
-        $form = $fw->form('Setting', $fw->store->hive());
+        $form = $fw->form('Setting', $fw->store->all());
 
         if ($form->isSubmitted() && $form->valid()) {
             $fw->store->merge($form->getValidatedData())->commit();

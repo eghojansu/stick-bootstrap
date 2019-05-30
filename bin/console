@@ -1,0 +1,41 @@
+#!/usr/bin/env php
+<?php
+
+use Fal\Stick\Cli\Command;
+use Fal\Stick\Cli\Console;
+
+$fw = (require __DIR__.'/../config/bootstrap.php')->emulateCliRequest();
+(new Console($fw))
+    ->add(
+        Command::create('run', function($console, $input) {
+            $address = $input->getOption('addr').':'.$input->getOption('port');
+            $command = implode(' ', array(
+                PHP_BINARY,
+                '-S',
+                $address,
+                '-t',
+                preg_replace(
+                    '/^'.preg_quote($console->fw->project_dir, '/').'/',
+                    '',
+                    getcwd()
+                ).'public',
+            ));
+
+            $console->writeln("Executing <comment>$command</>");
+            exec($command);
+        })
+        ->addOption('addr', 'Server address', 'a', '127.0.0.1', true)
+        ->addOption('port', 'Server port', 'p', 8000, true)
+    )
+    ->add(
+        Command::create('reset-app', function($console) {
+            $tmp = $console->fw->TEMP;
+            $console->fw->delete($tmp.'app.json');
+            $console->fw->delete($tmp.'parameters.ini');
+            $console->fw->delete($tmp.'version.ini');
+
+            $console->writeln('<info>OK, all clear</>');
+        })
+    )
+    ->run()
+;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Setup\Setup;
+namespace App\Setup\Version;
 
 use App\Setup\SetupInterface;
 use Fal\Stick\Form\Form;
@@ -21,11 +21,11 @@ class MysqlSetup implements SetupInterface
     public function __construct(Fw $fw)
     {
         $this->initial = static::overrideInitial($fw, $this->commitPrefix, array(
-            'db_host'  => 'localhost',
+            'db_host' => 'localhost',
             'db_port' => '3306',
-            'db_username'  => 'root',
+            'db_username' => 'root',
             'db_password' => 'root',
-            'db_dbname'  => 'test_stick',
+            'db_dbname' => 'test_stick',
         ));
         $this->fw = $fw;
         $this->form = $fw->form('install', $this->initial);
@@ -81,7 +81,7 @@ class MysqlSetup implements SetupInterface
     {
         $str = '';
         $globals = "[GLOBALS]\n";
-        $line = function($key, $arg) {
+        $line = function ($key, $arg) {
             if (is_string($arg)) {
                 $arg = str_replace(array('"', "'"), '', $arg);
             } elseif (is_array($arg)) {
@@ -221,7 +221,7 @@ class MysqlSetup implements SetupInterface
             ->set('confirm', 'submit', array(
                 'label' => 'Confirm Installation',
                 'attr' => array(
-                    'class' => 'btn btn-primary btn-lg'
+                    'class' => 'btn btn-primary btn-lg',
                 ),
             ))
             ->set('reset', 'reset', array(

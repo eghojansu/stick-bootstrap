@@ -3,7 +3,6 @@
 namespace App\Setup;
 
 use App\App;
-use App\Setup\Setup\SqliteSetup;
 use Fal\Stick\Fw;
 
 class Controller
@@ -19,7 +18,8 @@ class Controller
     {
         $fw->prepend('template_dir', __DIR__.'/template/;');
 
-        $setup = new SqliteSetup($fw);
+        $class = $fw['setup_class'];
+        $setup = new $class($fw);
         $versions = $this->loadVersions();
         $allowedVersions = array_filter($versions, array($this, 'isVersionAllowed'));
 

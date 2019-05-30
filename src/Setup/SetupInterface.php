@@ -10,16 +10,16 @@ interface SetupInterface
     /**
      * Execute prepare for version setup.
      *
-     * @param  Fw     $fw
-     * @param  array  $versions
+     * @param Fw    $fw
+     * @param array $versions
      */
     public function prepare(Fw $fw, array $versions);
 
     /**
      * Execute install for version setup.
      *
-     * @param  Fw     $fw
-     * @param  array  $versions
+     * @param Fw    $fw
+     * @param array $versions
      */
     public function install(Fw $fw, array $versions);
 

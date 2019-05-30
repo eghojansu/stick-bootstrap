@@ -26,16 +26,16 @@ class Tag
             $repeat = "array('$type' => \$__alerts)";
         } else {
             $get = $type;
-            $repeat = "\$__alerts";
+            $repeat = '$__alerts';
         }
 
         return
             "<?php if (\$__alerts = \$_->flash('SESSION.alerts$get'))".
             " foreach ($repeat as \$type => \$messages)".
-            " foreach ((array) \$messages as \$message): ?>".
+            ' foreach ((array) $messages as $message): ?>'.
             "<div class=\"alert alert-<?= \$type ?>$dismiss_class\" role=\"alert\">".
             "$dismiss_button <?= \$message ?>".
-            "</div>".
-            "<?php endforeach ?>";
+            '</div>'.
+            '<?php endforeach ?>';
     }
 }

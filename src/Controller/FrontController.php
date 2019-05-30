@@ -13,7 +13,7 @@ class FrontController
 
     public function login(Fw $fw)
     {
-        if ($fw->auth->login($fw->isMethod('post'))) {
+        if ($fw->auth->login($fw->isVerb('post'))) {
             return $fw->reroute('dashboard');
         }
 
@@ -25,8 +25,7 @@ class FrontController
     public function logout(Fw $fw)
     {
         $fw->auth->logout();
-        $fw->rem('SESSION');
 
-        return $fw->reroute('home');
+        return $fw->rem('SESSION')->reroute('home');
     }
 }

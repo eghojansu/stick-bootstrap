@@ -17,10 +17,10 @@ class ProfileForm extends Form
                 'constraints' => 'trim|required',
             ))
             ->add('username', 'text', array(
-                'constraints' => 'trim|required|unique:user,username,id,'.$this['id'],
+                'constraints' => 'trim|required|unique:user,username,'.$this['id'],
             ))
             ->add('new_password', 'password', array(
-                'constraints' => 'trim|lenMin:5',
+                'constraints' => 'trim|optional|min:5',
             ))
             ->add('old_password', 'password', array(
                 'constraints' => 'trim|required|password',

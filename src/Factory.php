@@ -6,19 +6,17 @@ use Fal\Stick\Db\Pdo\Db;
 use Fal\Stick\Db\Pdo\Driver\MysqlDriver;
 use Fal\Stick\Db\Pdo\Driver\SqliteDriver;
 use Fal\Stick\Db\Pdo\Mapper;
-use Fal\Stick\Db\Pdo\MapperRule;
 use Fal\Stick\Form\Form;
 use Fal\Stick\Form\FormBuilder\Twbs3FormBuilder;
 use Fal\Stick\Fw;
 use Fal\Stick\Html\MenuList;
 use Fal\Stick\Html\PaginationList;
 use Fal\Stick\Security\Auth;
-use Fal\Stick\Security\AuthRule;
 use Fal\Stick\Security\BcryptPasswordEncoder;
 use Fal\Stick\Template\Environment;
 use Fal\Stick\Util\Crud;
 use Fal\Stick\Util\ValueStore;
-use Fal\Stick\Validation\Rules\CommonRule;
+use Fal\Stick\Validation\Rules\LaravelRule;
 use Fal\Stick\Validation\Validator;
 
 class Factory
@@ -60,11 +58,7 @@ class Factory
     public static function validator(Fw $fw)
     {
         $validator = new Validator($fw);
-        $validator->add(new CommonRule());
-
-        if ($fw->app->isInstalled()) {
-            $validator->add(new MapperRule($fw->db), new AuthRule($fw->auth));
-        }
+        $validator->add(new LaravelRule());
 
         return $validator;
     }

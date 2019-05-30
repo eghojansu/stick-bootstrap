@@ -10,12 +10,12 @@ class User extends Mapper implements UserProviderInterface, UserInterface
 {
     public function findByUsername($username): ?UserInterface
     {
-        return $this->findOneByUsername($username)->valid() ? $this : null;
+        return $this->findOne(compact('username'))->valid() ? $this : null;
     }
 
     public function findById($id): ?UserInterface
     {
-        return $this->findOneById($id)->valid() ? $this : null;
+        return $this->findOne(compact('id'))->valid() ? $this : null;
     }
 
     public function getId(): string

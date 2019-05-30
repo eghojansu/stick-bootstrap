@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Setup\Setup;
+namespace App\Setup\Version;
 
 use Fal\Stick\Fw;
 
@@ -11,7 +11,7 @@ class SqliteSetup extends MysqlSetup
     public function __construct(Fw $fw)
     {
         $this->initial = self::overrideInitial($fw, $this->commitPrefix, array(
-            'db_path'  => $fw->TEMP.'app.db',
+            'db_path' => $fw->TEMP.'app.db',
         ));
         $this->fw = $fw;
         $this->form = $fw->form('install', $this->initial);

@@ -17,7 +17,7 @@ class App
 
     public function __call($method, $arguments)
     {
-        if (strncasecmp($method, 'alert', 5) === 0) {
+        if (0 === strncasecmp($method, 'alert', 5)) {
             return $this->alert($arguments[0], strtolower(substr($method, 5)), $arguments[1] ?? null);
         }
 

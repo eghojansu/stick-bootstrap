@@ -18,7 +18,7 @@ class MaintenanceForm extends Form
             ))
             ->add('long', 'text', array(
                 'label' => 'Maintenace Time',
-                'constraints' => 'required|min:1',
+                'constraints' => 'required|integer|min:1',
             ))
             ->add('message', 'textarea', array(
                 'label' => 'Message',
