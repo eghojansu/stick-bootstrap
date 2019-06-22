@@ -51,7 +51,7 @@ class Factory
 
     public static function template(Fw $fw)
     {
-        return (new Environment($fw, $fw->template_dir, null, $fw->template_reload))
+        return (new Environment($fw, $fw->template_dir, null, null, $fw->template_reload))
             ->extend('alerts', 'App\\Tag::alerts');
     }
 
@@ -104,12 +104,12 @@ class Factory
     {
         return (new Crud($fw, $fw->template, $fw->auth))
             ->views(array(
-                'view' => 'crud/view.html',
-                'listing' => 'crud/listing.html',
-                'create' => 'crud/form.html',
-                'update' => 'crud/form.html',
-                'delete' => 'crud/delete.html',
-                'forbidden' => 'crud/forbidden.html',
+                'view' => 'crud.view',
+                'listing' => 'crud.listing',
+                'create' => 'crud.form',
+                'update' => 'crud.form',
+                'delete' => 'crud.delete',
+                'forbidden' => 'crud.forbidden',
             ))
             ->createNew(true)
             ->appendQuery(true)

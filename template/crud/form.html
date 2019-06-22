@@ -1,9 +1,9 @@
-<extends href="dashboard.html">
+<extends href="dashboard">
 
 <block name="content">
   <h1>{{ @crud->title }}</h1>
 
   <alerts />
 
-  <include href="_form.html" with="form=@crud->form,back=@crud->path()" />
+  <include href="_form" with="form=@crud->form,back=@crud->path()" />
 </block>

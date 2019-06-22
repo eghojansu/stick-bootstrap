@@ -18,7 +18,7 @@ class UserForm extends Form
                 'constraints' => 'trim|required',
             ))
             ->add('username', 'text', array(
-                'constraints' => 'trim|required|unique:user,username,'.$this['id'],
+                'constraints' => 'trim|required|unique:user,'.$this['id'],
             ))
             ->add('password', 'password', array(
                 'constraints' => $this['id'] ? null : 'required',

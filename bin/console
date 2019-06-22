@@ -10,8 +10,8 @@ chdir($fw->project_dir);
 
 (new Console($fw))
     ->add(
-        Command::create('run', function($console, $input) {
-            $address = $input->getOption('addr').':'.$input->getOption('port');
+        Command::create('serve', function($console, $input) {
+            $address = $console->fw->get('BASE_URL') ?? $input->getOption('addr').':'.$input->getOption('port');
             $command = implode(' ', array(
                 PHP_BINARY,
                 '-S',

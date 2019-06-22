@@ -8,7 +8,7 @@ class FrontController
 {
     public function home(Fw $fw)
     {
-        return $fw->template->render('front/home.html');
+        return $fw->template->render('front.home');
     }
 
     public function login(Fw $fw)
@@ -17,7 +17,7 @@ class FrontController
             return $fw->reroute('dashboard');
         }
 
-        return $fw->template->render('front/login.html', array(
+        return $fw->template->render('front.login', array(
             'message' => $fw->auth->error(),
         ));
     }

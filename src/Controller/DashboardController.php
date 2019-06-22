@@ -8,7 +8,7 @@ class DashboardController
 {
     public function home(Fw $fw)
     {
-        return $fw->template->render('dashboard/home.html');
+        return $fw->template->render('dashboard.home');
     }
 
     public function profile(Fw $fw)
@@ -27,7 +27,7 @@ class DashboardController
             return $fw->app->alertSuccess('Profile has been updated.');
         }
 
-        return $fw->template->render('dashboard/profile.html', array(
+        return $fw->template->render('dashboard.profile', array(
             'form' => $form,
         ));
     }
@@ -74,7 +74,7 @@ class DashboardController
             return $fw->app->alertSuccess('Setting has been updated.');
         }
 
-        return $fw->template->render('dashboard/setting.html', array(
+        return $fw->template->render('dashboard.setting', array(
             'form' => $form,
         ));
     }
@@ -103,7 +103,7 @@ class DashboardController
             return $fw->app->alertDanger('Invalid maintenance definition.');
         }
 
-        return $fw->template->render('dashboard/maintenance.html', array(
+        return $fw->template->render('dashboard.maintenance', array(
             'form' => $form,
         ));
     }
