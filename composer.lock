@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "977195fb706ae402c3ff54eb75b694e3",
+    "content-hash": "07bf118757c78effc2d261c1a2167979",
     "packages": [
         {
             "name": "eghojansu/stick",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/eghojansu/stick.git",
-                "reference": "df018f66878fe725ab7838b220e2ebdb00fd7507"
+                "reference": "7ec3493d0044a1fcc43648085ecc5fe69836f5f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eghojansu/stick/zipball/df018f66878fe725ab7838b220e2ebdb00fd7507",
-                "reference": "df018f66878fe725ab7838b220e2ebdb00fd7507",
+                "url": "https://api.github.com/repos/eghojansu/stick/zipball/7ec3493d0044a1fcc43648085ecc5fe69836f5f9",
+                "reference": "7ec3493d0044a1fcc43648085ecc5fe69836f5f9",
                 "shasum": ""
             },
             "require": {
@@ -46,7 +46,7 @@
                 "MIT"
             ],
             "description": "Stick~to~PHP Framework",
-            "time": "2019-06-22T05:54:34+00:00"
+            "time": "2019-06-30T03:29:27+00:00"
         }
     ],
     "packages-dev": [],
